@@ -1,19 +1,18 @@
-import express from "express";
+import { Request, Response, NextFunction } from "express";
+import { ExpressMiddlewareInterface, Middleware } from "routing-controllers";
 
-export const StudentsMiddleware = (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) => {
-  console.log("Request intercepted by StudentsMiddleware");
-  next();
-};
+@Middleware({ type: "before" })
+export class StudentsMiddleware implements ExpressMiddlewareInterface {
+  use(req: Request, res: Response, next: NextFunction) {
+    console.log("Request intercepted by Students-BEFORE-Middleware");
+    next();
+  }
+}
 
-export const StudentsCreateMiddleware = (
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
-) => {
-  console.log("Request intercepted by StudentsCreateMiddleware");
-  next();
-};
+@Middleware({ type: "before" })
+export class StudentsCreateMiddleware implements ExpressMiddlewareInterface {
+  use(req: Request, res: Response, next: NextFunction) {
+    console.log("Request intercepted by StudentsCreateMiddleware");
+    next();
+  }
+}
