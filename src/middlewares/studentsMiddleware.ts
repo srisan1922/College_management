@@ -4,7 +4,7 @@ import { ExpressMiddlewareInterface, Middleware } from "routing-controllers";
 @Middleware({ type: "before" })
 export class StudentsMiddleware implements ExpressMiddlewareInterface {
   use(req: Request, res: Response, next: NextFunction) {
-    console.log("Request intercepted by Students-BEFORE-Middleware");
+    console.log("Request intercepted by Students BEFORE Middleware");
     next();
   }
 }
@@ -12,7 +12,7 @@ export class StudentsMiddleware implements ExpressMiddlewareInterface {
 @Middleware({ type: "before" })
 export class StudentsCreateMiddleware implements ExpressMiddlewareInterface {
   use(req: Request, res: Response, next: NextFunction) {
-    console.log("Request intercepted by StudentsCreateMiddleware");
+    console.log("Request intercepted by StudentsCreate BEFORE Middleware");
     next();
   }
 }

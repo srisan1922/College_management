@@ -13,6 +13,7 @@ import {
   Req,
   Res,
 } from "routing-controllers";
+import { validate } from "class-validator";
 
 // export class DepartmentController {
 //   static async getAllDepartment(req: Request, res: Response) {
@@ -164,7 +165,10 @@ export class DepartmentController {
   }
 
   @Post("/")
-  async createNewDepartment(@Body() requestData: any, @Res() res: Response) {
+  async createNewDepartment(
+    @Body() requestData: Department,
+    @Res() res: Response
+  ) {
     const department: Department = new Department();
     const {
       departmentID,
@@ -180,6 +184,23 @@ export class DepartmentController {
     department.officeLocation = officeLocation;
     department.contactNumber = contactNumber;
     try {
+      const errors = await validate(department, {
+        validationError: { target: false },
+      });
+
+      if (errors.length > 0) {
+        const formatError = errors.map((error) => {
+          return {
+            property: error.property,
+            value: error.value,
+            constraints: error.constraints,
+          };
+        });
+        return res.status(400).json({
+          message: "Validation Failed",
+          errors: formatError,
+        });
+      }
       const createdDepartment = await AppDataSource.getRepository(
         Department
       ).save(department);

@@ -3,17 +3,20 @@ import { AppDataSource } from "../datasources/data-source";
 import { Students } from "../models/students";
 import {
   Body,
-  Controller,
   Delete,
   Get,
+  JsonController,
   Param,
   Post,
   Put,
   Req,
   Res,
   UseBefore,
+  UseInterceptor,
 } from "routing-controllers";
 import { StudentsCreateMiddleware } from "../middlewares/studentsMiddleware";
+import { validate } from "class-validator";
+import { StudentInterceptor } from "../interceptors/studentInterceptor";
 
 // export class StudentsController {
 //   static async getAllStudents(req: Request, res: Response) {
@@ -140,7 +143,8 @@ import { StudentsCreateMiddleware } from "../middlewares/studentsMiddleware";
 //   }
 // }
 
-@Controller("/students")
+@JsonController("/students")
+@UseInterceptor(StudentInterceptor)
 export class StudentsController {
   @Get("/:studentID")
   async getStudentByID(
@@ -237,7 +241,7 @@ export class StudentsController {
 
   @UseBefore(StudentsCreateMiddleware)
   @Post("/")
-  async createNewStudent(@Body() requestData: any, @Res() res: Response) {
+  async createNewStudent(@Body() studentData: Students, @Res() res: Response) {
     const student: Students = new Students();
     const {
       studentID,
@@ -246,7 +250,7 @@ export class StudentsController {
       dateOfBirth,
       email,
       department,
-    } = requestData;
+    } = studentData;
 
     student.studentID = studentID;
     student.studentFName = studentFName;
@@ -256,6 +260,23 @@ export class StudentsController {
     student.department = department;
 
     try {
+      const errors = await validate(student, {
+        validationError: { target: false },
+      });
+
+      if (errors.length > 0) {
+        const formatError = errors.map((error) => {
+          return {
+            property: error.property,
+            value: error.value,
+            constraints: error.constraints,
+          };
+        });
+        return res.status(400).json({
+          message: "Validation Failed",
+          errors: formatError,
+        });
+      }
       await AppDataSource.getRepository(Students).save(student);
       return res.status(200).json({
         status: "Student create Successfully",

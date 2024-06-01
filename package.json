@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start:dev": "nodemon ./src/app.ts",
-    "start:prod": "node ./dist/app.js",
+    "start:prod": "nodemon ./dist/app.js",
     "start": "npx tsc && nodemon ./dist/app.js"
   },
   "keywords": [],
@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "axios": "^1.7.1",
+    "class-validator": "^0.14.1",
     "express": "^4.19.2",
     "mongodb": "^5.9.2",
     "mssql": "^10.0.2",

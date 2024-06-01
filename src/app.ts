@@ -7,6 +7,7 @@ import { AppDataSource } from "./datasources/data-source";
 import { StudentsController } from "./controllers/studentsController";
 import { DepartmentController } from "./controllers/departmentController";
 import axios from "axios";
+import { GlobalInterceptor } from "./interceptors/globalInterceptor";
 
 class App {
   app: express.Express;
@@ -18,6 +19,7 @@ class App {
 
     useExpressServer(this.app, {
       controllers: [StudentsController, DepartmentController],
+      interceptors: [GlobalInterceptor],
     });
 
     this.configureAxiosInterceptor();
@@ -87,16 +89,17 @@ class App {
     const port = process.env.PORT || 3000;
     AppDataSource.initialize()
       .then(() => {
+        this.app.listen(port, () => {
+          console.log(
+            `Server is succesfully running in http://localhost:${port}`
+          );
+        });
         //Mongo Db connection started
         console.log(`MongoDB server connected`);
       })
       .catch((err) => {
         console.log(err.message);
       });
-
-    this.app.listen(port, () => {
-      console.log(`Server is succesfully running in http://localhost:${port}`);
-    });
   }
 }
 
