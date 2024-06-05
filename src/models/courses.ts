@@ -1,4 +1,10 @@
-import { Entity, BaseEntity, ObjectIdColumn, Column } from "typeorm";
+import {
+  Entity,
+  BaseEntity,
+  ObjectIdColumn,
+  Column,
+  ViewColumn,
+} from "typeorm";
 import { ObjectId } from "mongodb";
 import { IsInt, Length, Max, Min } from "class-validator";
 
@@ -10,7 +16,7 @@ export class Courses extends BaseEntity {
 
   @Column()
   @Length(10, 20)
-  courseName!: string;
+  courseName?: string;
 
   @Column()
   @Length(10, 50)
@@ -25,4 +31,9 @@ export class Courses extends BaseEntity {
   @Column()
   @Length(10, 20)
   instructor?: string;
+
+  @ViewColumn()
+  fullName(): string {
+    return `${this.courseName} is ${this.description}`;
+  }
 }

@@ -9,7 +9,6 @@ import {
 } from "class-validator";
 import { ObjectId } from "mongodb";
 import { Entity, Column, BaseEntity, ObjectIdColumn } from "typeorm";
-import { CustomTextLength } from "../validators/CustomTextLength";
 
 @Entity("students")
 export class Students extends BaseEntity {

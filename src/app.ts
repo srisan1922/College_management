@@ -25,7 +25,7 @@ class App {
     this.configureAxiosInterceptor();
   }
 
-  configureAxiosInterceptor() {
+  private configureAxiosInterceptor() {
     //Request interceptor which intersepts before request hits the server
     axios.interceptors.request.use(
       (config) => {
@@ -55,10 +55,10 @@ class App {
     );
   }
 
-  configureMiddleware() {
-    console.log("configure middleware");
+  private configureMiddleware() {
+    console.log("configure middleware from app.ts file");
     //Parsing all the request body to JSON formate
-    this.app.use(bodyParser.json());
+    this.app.use(express.json());
     //Parses incoming request bodies containing URL-encoded data
     this.app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -85,7 +85,7 @@ class App {
   //   });
   // }
 
-  start() {
+  public startServer() {
     const port = process.env.PORT || 3000;
     AppDataSource.initialize()
       .then(() => {
@@ -104,4 +104,4 @@ class App {
 }
 
 const app = new App();
-app.start();
+app.startServer();
