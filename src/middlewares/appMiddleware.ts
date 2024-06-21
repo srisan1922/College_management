@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { ExpressMiddlewareInterface, Middleware } from "routing-controllers";
+import { Service } from "typedi";
 
 // export const AppMiddleware = (
 //   req: Request,
@@ -16,6 +17,7 @@ import { ExpressMiddlewareInterface, Middleware } from "routing-controllers";
 //   next();
 // };
 
+@Service()
 @Middleware({ type: "before" })
 export class AppMiddleware implements ExpressMiddlewareInterface {
   use(req: Request, res: Response, next: NextFunction) {

@@ -15,7 +15,7 @@ import {
 } from "routing-controllers";
 import { StudentsCreateMiddleware } from "../middlewares/studentsMiddleware";
 import { StudentInterceptor } from "../interceptors/studentInterceptor";
-import { Inject } from "typedi";
+import { Inject, Service } from "typedi";
 import { StudentService } from "../services/studentServices";
 import { NotFoundError, ValidationError } from "../errors/customeError";
 
@@ -296,6 +296,7 @@ export class StudentsController {
 //Using TypeDI Dependency Injector
 @JsonController("/students")
 @UseInterceptor(StudentInterceptor)
+@Service()
 export class StudentsController {
   @Inject()
   private studentService!: StudentService;

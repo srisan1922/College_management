@@ -1,28 +1,31 @@
 import express, { Application, NextFunction, Request, Response } from "express";
 import "reflect-metadata";
 import bodyParser from "body-parser";
-import { useExpressServer } from "routing-controllers";
+import { useContainer, useExpressServer } from "routing-controllers";
 import { AppMiddleware } from "./middlewares/appMiddleware";
 import { AppDataSource } from "./datasources/data-source";
 import { StudentsController } from "./controllers/studentsController";
 import { DepartmentController } from "./controllers/departmentController";
 import axios from "axios";
 import { GlobalInterceptor } from "./interceptors/globalInterceptor";
+import Container from "typedi";
 
+useContainer(Container);
 class App {
   app: express.Express;
-  AppMW = AppMiddleware;
   constructor() {
     this.app = express();
     this.configureMiddleware();
-    // this.setupRouter();
+    this.setupRouter();
+    this.configureAxiosInterceptor();
+  }
 
+  private setupRouter() {
     useExpressServer(this.app, {
       controllers: [StudentsController, DepartmentController],
+      middlewares: [AppMiddleware],
       interceptors: [GlobalInterceptor],
     });
-
-    this.configureAxiosInterceptor();
   }
 
   private configureAxiosInterceptor() {

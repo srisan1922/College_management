@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { ExpressMiddlewareInterface, Middleware } from "routing-controllers";
+import { Service } from "typedi";
 
+@Service()
 @Middleware({ type: "before" })
 export class StudentsMiddleware implements ExpressMiddlewareInterface {
   use(req: Request, res: Response, next: NextFunction) {
@@ -9,6 +11,7 @@ export class StudentsMiddleware implements ExpressMiddlewareInterface {
   }
 }
 
+@Service()
 @Middleware({ type: "before" })
 export class StudentsCreateMiddleware implements ExpressMiddlewareInterface {
   use(req: Request, res: Response, next: NextFunction) {

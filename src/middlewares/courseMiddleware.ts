@@ -5,6 +5,7 @@ import {
   Req,
   Res,
 } from "routing-controllers";
+import { Service } from "typedi";
 
 // export const CoursesMiddleware = (
 //   req: express.Request,
@@ -14,7 +15,7 @@ import {
 //   console.log("Request intercepted by CoursesMiddleware");
 //   next();
 // };
-
+@Service()
 @Middleware({ type: "before" })
 export class CoursesMiddleware implements ExpressMiddlewareInterface {
   use(@Req() req: Request, @Res() res: Response, next: NextFunction) {
@@ -23,6 +24,7 @@ export class CoursesMiddleware implements ExpressMiddlewareInterface {
   }
 }
 
+@Service()
 @Middleware({ type: "before" })
 export class CoursesCreateMiddleware implements ExpressMiddlewareInterface {
   use(@Req() req: Request, @Res() res: Response, next: NextFunction) {
